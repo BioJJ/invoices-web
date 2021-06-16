@@ -1,0 +1,48 @@
+<template>
+  <v-app id="invoices">
+    <sidebar :drawer="drawer" :menu="menu" />
+
+    <v-app-bar app color="#fff" style="color: #133896">
+      <div class="d-flex">
+        <v-app-bar-nav-icon
+          @click="drawer = !drawer"
+          color="#fff"
+        ></v-app-bar-nav-icon>
+        <img
+          style="max-height: 45px !important; height: 90% !important"
+          :src="baseUrl + '/img/logo2.png'"
+        />
+      </div>
+
+      <v-btn color="white" class="logout-header" elevation="0">
+        GitHub <v-icon small color="primary" class="ml-2">mdi-logout</v-icon>
+      </v-btn>
+    </v-app-bar>
+  </v-app>
+</template>
+
+<script>
+import Sidebar from "./Sidebar";
+import routes from "../../util/menu-routes";
+export default {
+  components: { Sidebar },
+  data: () => ({
+    drawer: true,
+    menu: routes,
+  }),
+};
+</script>
+
+<style>
+.v-toolbar__content,
+.v-toolbar__extension {
+  justify-content: space-between;
+}
+.logout-header {
+  float: right !important;
+  cursor: pointer;
+}
+.logout-header i {
+  transform: translateX(-1px);
+}
+</style>
