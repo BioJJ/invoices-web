@@ -1,5 +1,5 @@
 <template>
-  <v-container id="establishment" class="pa-6" fluid>
+  <v-container id="notesServices" class="pa-6" fluid>
     <v-row>
       <v-col cols="6">
         <v-breadcrumbs divider="|" class="pa-0 breadcrumbs-pgc">
@@ -11,7 +11,7 @@
         <v-card class="pa-10 pgc-card-box pgc-card-crud">
           <v-form ref="form" lazy-validation>
             <div class="pgc-crud-header">
-              <h2>Establishment</h2>
+              <h2>Notes</h2>
               <v-progress-linear
                 value="8"
                 color="primary"
@@ -23,29 +23,36 @@
               <v-col cols="5">
                 <v-text-field
                   :rules="[rules.required, rules.min5chars, rules.max255chars]"
-                  v-model="form.name"
-                  label="Name"
+                  v-model="form.date"
+                  label="Issue Date"
                   dense
                 ></v-text-field>
               </v-col>
 
+              <v-col cols="3">
+                <v-autocomplete
+                  :items="establishments"
+                  :rules="[rules.required]"
+                  v-model="form.establishment"
+                  label="Establishment"
+                  item-value="_id"
+                  item-text="name"
+                  dense
+                ></v-autocomplete>
+              </v-col>
+
               <v-col cols="4">
                 <v-text-field
-                  :rules="[rules.required, rules.min5chars, rules.max255chars]"
-                  v-model="form.cnpj"
-                  label="CNPJ"
+                  :rules="[rules.required]"
+                  v-model="form.total"
+                  label="total"
                   dense
                 ></v-text-field>
               </v-col>
             </v-row>
           </v-form>
           <div class="d-flex justify-end">
-            <v-btn
-              to="/establishments"
-              color="red"
-              outlined
-              class="ml-5 pgc-btn-form"
-            >
+            <v-btn to="/notes" color="red" outlined class="ml-5 pgc-btn-form">
               Cancel
             </v-btn>
             <v-btn
@@ -73,31 +80,36 @@
 
 <script lang="ts">
 import rules from "@/util/general-rules";
+import NotesServices from "@/services/NotesServices";
 import EstablishmentsServices from "@/services/EstablishmentsServices";
 import IEstablishment from "@/types/IEstablishment";
 export default {
   data: () => ({
     formLoading: false,
     rules: rules,
-    companies: [],
-    funtionality: {},
-    establishment: [],
+    establishments: [],
+
+    note: [],
     form: {
-      name: "",
-      cnpj: "",
+      total: "",
+      issue_date: "",
+      establishment: "",
     },
   }),
   mounted() {
-    this.$route.params.id && this.getEstablishment();
+    this.getEstablishments();
+    this.$route.params.id && this.getNote();
   },
   methods: {
-    async getEstablishment() {
+    async getEstablishments(): Promise<void> {
+      const { data } = await EstablishmentsServices.getAll();
+      this.establishments = data;
+    },
+    async getNote() {
       try {
-        const { data } = await EstablishmentsServices.get(
-          this.$route.params.id
-        );
-        this.establishment = data;
-        this.form = this.establishment;
+        const { data } = await NotesServices.get(this.$route.params.id);
+        this.note = data;
+        this.form = this.note;
       } catch (error) {
         // this.$toast.error("Department not found", "Error!");
       }
@@ -106,15 +118,12 @@ export default {
       this.formLoading = true;
       try {
         if (this.$route.params.id) {
-          await EstablishmentsServices.update(
-            this.$route.params.id,
-            this.establishment
-          );
+          await NotesServices.update(this.$route.params.id, this.note);
         } else {
-          await EstablishmentsServices.create(this.form);
+          await NotesServices.create(this.form);
         }
         this.formLoading = false;
-        this.$router.push({ name: "EstablishmentList" });
+        this.$router.push({ name: "NoteList" });
 
         this.formLoading = false;
       } catch (error) {
@@ -123,16 +132,17 @@ export default {
     },
     cancel(): void {
       this.resetForm();
-      this.$router.push({ name: "EstablishmentList" });
+      this.$router.push({ name: "NoteList" });
     },
     resetForm(): void {
-      if (this.establishment) {
+      if (this.note) {
         console.log(1);
-        this.getEstablishment();
+        this.getNote();
       } else {
         this.form = {
-          name: "",
-          cnpj: "",
+          total: "",
+          issue_date: "",
+          establishment: "",
         };
       }
     },

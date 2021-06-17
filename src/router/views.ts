@@ -22,7 +22,7 @@ const routes = [
   // Establishments
   {
     path: 'establishments',
-    name: 'EstablishmentsList',
+    name: 'EstablishmentList',
     meta: {
       title: 'Establishments',
     },
@@ -53,6 +53,42 @@ const routes = [
     },
     props: (route: any) => ({ ...route.params }),
     component: () => import('../views/establishments/EstablishmentView.vue'),
+  },
+
+  // Notes
+  {
+    path: 'notes',
+    name: 'NoteList',
+    meta: {
+      title: 'Notes',
+    },
+    component: () => import('../views/notes/NoteList.vue'),
+  },
+  {
+    path: 'notes/create',
+    name: 'NoteForm',
+    meta: {
+      title: 'Notes',
+    },
+    component: () => import('../views/notes/NoteForm.vue'),
+  },
+  {
+    path: 'notes/edit/:id',
+    name: 'NoteEdit',
+    meta: {
+      title: 'Notes',
+    },
+    props: (route: any) => ({ ...route.params }),
+    component: () => import('../views/notes/NoteForm.vue'),
+  },
+  {
+    path: 'notes/view/:id',
+    name: 'NoteView',
+    meta: {
+      title: 'Notes',
+    },
+    props: (route: any) => ({ ...route.params }),
+    component: () => import('../views/notes/NoteView.vue'),
   },
 ];
 
