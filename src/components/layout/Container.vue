@@ -8,10 +8,7 @@
           @click="drawer = !drawer"
           color="#fff"
         ></v-app-bar-nav-icon>
-        <img
-          style="max-height: 45px !important; height: 90% !important"
-          :src="baseUrl + '/img/logo2.png'"
-        />
+        <img style="max-height: 45px !important; height: 90% !important" />
       </div>
 
       <v-btn color="white" class="logout-header" elevation="0">
@@ -21,8 +18,8 @@
   </v-app>
 </template>
 
-<script>
-import Sidebar from "./Sidebar";
+<script lang="ts">
+import Sidebar from "./Sidebar.vue";
 import routes from "../../util/menu-routes";
 export default {
   components: { Sidebar },
