@@ -73,8 +73,9 @@
 </template>
 
 <script lang="ts">
-import TableAction from "../../components/layout/TableAction.vue";
-import DeleteModal from "../../components/layout/DeleteModal.vue";
+import TableAction from "@/components/layout/TableAction.vue";
+import DeleteModal from "@/components/layout/DeleteModal.vue";
+import EstablishmentsServices from "@/services/EstablishmentsServices";
 export default {
   components: { DeleteModal, TableAction },
   data: () => ({
@@ -82,12 +83,10 @@ export default {
     page: 1,
     pageCount: 0,
     itemsPerPage: 10,
-    name: "",
-    login: "",
     establishments: [],
     headers: [
       { text: "Name", align: "start", value: "name" },
-      { text: "CNPJ", align: "start", value: "email" },
+      { text: "CNPJ", align: "start", value: "cnpj" },
       {
         text: "Action",
         align: "center",
@@ -98,19 +97,19 @@ export default {
     ],
   }),
   mounted() {
-    // this.getEstablishments();
-    console.log("Establishments");
+    this.getEstablishments();
   },
 
   methods: {
-    async getEstablishments() {
-      console.log("lista");
+    async getEstablishments(): Promise<void> {
+      const { data } = await EstablishmentsServices.getAll();
+      this.establishments = data;
     },
 
     deleteModal(name: string, id: string) {
       // this.$refs.DeleteModal.showModal(name, id);
     },
-    deleteUser() {
+    deleteEstablishment() {
       // this.$toast.success("Establishment deleted successfully", "Success!");
       this.getEstablishments();
     },

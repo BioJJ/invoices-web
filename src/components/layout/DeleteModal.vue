@@ -1,10 +1,13 @@
 <template>
   <v-dialog v-model="show" persistent max-width="450">
     <v-card>
-      <v-card-title class="headline red--text"> Delete <span class="text-capitalize ml-1">{{ table }}</span>? </v-card-title>
+      <v-card-title class="headline red--text">
+        Delete <span class="text-capitalize ml-1">{{ table }}</span
+        >?
+      </v-card-title>
       <v-card-text>
-        This will erase the {{ table }} data "{{ name }}" from the
-        system. Are you sure you want to delete the {{ table }}?
+        This will erase the {{ table }} data "{{ name }}" from the system. Are
+        you sure you want to delete the {{ table }}?
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -20,34 +23,33 @@
 <script>
 export default {
   props: {
-    table: { 
+    table: {
       type: String,
-      required: true
+      required: true,
     },
-    route: { 
+    route: {
       type: String,
-      required: true
+      required: true,
     },
   },
   data: () => ({
     show: false,
-    name: '',
-    id: '',
+    name: "",
+    id: "",
     loading: false,
-    userId: ''
+    userId: "",
   }),
   methods: {
     async confirmDelete() {
       this.loading = true;
       try {
-        this.userId = localStorage.getItem('id')
-        if(this.userId != this.id){
+        this.userId = localStorage.getItem("id");
+        if (this.userId != this.id) {
           await this.$axios.delete(`${this.route}/${this.id}`);
           this.show = false;
           this.loading = false;
           this.$emit("delete");
-        }
-        else {
+        } else {
           this.loading = false;
           this.$toast.error("Error, you can't delete your user!", "Error!");
         }

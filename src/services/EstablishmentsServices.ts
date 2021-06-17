@@ -14,7 +14,7 @@ class EstablishmentsServices {
   }
 
   update(id: string, data: any) {
-    return api.put(`/establishments/${id}`, data);
+    return api.patch(`/establishments/${id}`, data);
   }
 
   delete(id: string) {

@@ -15,6 +15,9 @@
         GitHub <v-icon small color="primary" class="ml-2">mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
+    <v-main class="pl-12" style="background-color: #eff4ff">
+      <router-view style="background-color: #eff4ff"></router-view>
+    </v-main>
   </v-app>
 </template>
 
