@@ -20,15 +20,6 @@
               />
             </div>
             <v-row class="pgc-form-row">
-              <!-- <v-col cols="5">
-                <v-text-field
-                  :rules="[rules.required, rules.min5chars, rules.max255chars]"
-                  v-model="form.date"
-                  label="Issue Date"
-                  dense
-                ></v-text-field>
-              </v-col> -->
-
               <v-col cols="3">
                 <v-autocomplete
                   :items="establishments"
@@ -103,7 +94,6 @@ export default class NoteForm extends Vue {
   formLoading = false;
   rules = rules();
   establishments: [] = [];
-
   note: [] = [];
   form: Notes = {
     total: 0,
@@ -124,7 +114,7 @@ export default class NoteForm extends Vue {
       this.note = data;
       this.form = data;
     } catch (error) {
-      // this.$toast.error("Department not found", "Error!");
+      this.$toast.error("Notes not found", "Error!");
     }
   }
   async submitForm(): Promise<void> {
@@ -132,8 +122,10 @@ export default class NoteForm extends Vue {
     try {
       if (this.$route.params.id) {
         await NotesServices.update(this.$route.params.id, this.note);
+        this.$toast.info("Note Updated successfully", "Success!");
       } else {
         await NotesServices.create(this.form);
+        this.$toast.success("Note Saved successfully", "Success!");
       }
       this.formLoading = false;
       this.$router.push({ name: "NoteList" });

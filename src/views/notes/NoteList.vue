@@ -111,7 +111,7 @@ export default class NoteList extends Vue {
     this.$refs.DeleteModal.showModal(name, _id);
   }
   deleteNote(): void {
-    // this.$toast.success("Establishment deleted successfully", "Success!");
+    this.$toast.success("Note deleted successfully", "Success!");
     this.getNotes();
   }
 }

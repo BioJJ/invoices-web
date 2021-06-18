@@ -97,7 +97,7 @@ export default class EstablishmentForm extends Vue {
       this.establishment = data;
       this.form = data;
     } catch (error) {
-      // this.$toast.error("Department not found", "Error!");
+      this.$toast.error("Establishment not found", "Error!");
     }
   }
   async submitForm(): Promise<void> {
@@ -108,8 +108,10 @@ export default class EstablishmentForm extends Vue {
           this.$route.params.id,
           this.establishment
         );
+        this.$toast.info("Establishment Updated successfully", "Success!");
       } else {
         await EstablishmentsServices.create(this.form);
+        this.$toast.success("Establishment Saved successfully", "Success!");
       }
       this.formLoading = false;
       this.$router.push({ name: "EstablishmentList" });

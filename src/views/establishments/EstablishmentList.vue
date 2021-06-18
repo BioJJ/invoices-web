@@ -113,7 +113,7 @@ export default class EstablishmentList extends Vue {
     this.$refs.DeleteModal.showModal(name, _id);
   }
   deleteEstablishment(): void {
-    // this.$toast.success("Establishment deleted successfully", "Success!");
+    this.$toast.success("Establishment deleted successfully", "Success!");
     this.getEstablishments();
   }
 }
