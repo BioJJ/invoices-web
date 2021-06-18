@@ -75,44 +75,48 @@
 <script lang="ts">
 import TableAction from "@/components/layout/TableAction.vue";
 import DeleteModal from "@/components/layout/DeleteModal.vue";
+import { Vue, Component } from "vue-property-decorator";
 import EstablishmentsServices from "@/services/EstablishmentsServices";
-export default {
-  components: { DeleteModal, TableAction },
-  data: () => ({
-    search: "",
-    page: 1,
-    pageCount: 0,
-    itemsPerPage: 10,
-    establishments: [],
-    headers: [
-      { text: "Name", align: "start", value: "name" },
-      { text: "CNPJ", align: "start", value: "cnpj" },
-      {
-        text: "Action",
-        align: "center",
-        value: "action",
-        sortable: false,
-        width: "150px",
-      },
-    ],
-  }),
-  mounted() {
+
+@Component({
+  components: {
+    DeleteModal,
+    TableAction,
+  },
+})
+export default class EstablishmentList extends Vue {
+  search = "";
+  page = 1;
+  pageCount = 0;
+  itemsPerPage = 10;
+  establishments: [] = [];
+  headers = [
+    { text: "Name", align: "start", value: "name" },
+    { text: "CNPJ", align: "start", value: "cnpj" },
+    {
+      text: "Action",
+      align: "center",
+      value: "action",
+      sortable: false,
+      width: "150px",
+    },
+  ];
+  created(): void {
     this.getEstablishments();
-  },
+  }
 
-  methods: {
-    async getEstablishments(): Promise<void> {
-      const { data } = await EstablishmentsServices.getAll();
-      this.establishments = data;
-    },
+  async getEstablishments(): Promise<void> {
+    const { data } = await EstablishmentsServices.getAll();
+    this.establishments = data;
+  }
 
-    deleteModal(name: string, id: string) {
-      // this.$refs.DeleteModal.showModal(name, id);
-    },
-    deleteEstablishment() {
-      // this.$toast.success("Establishment deleted successfully", "Success!");
-      this.getEstablishments();
-    },
-  },
-};
+  deleteModal(name: string, id: string): void {
+    console.log("deveria ter um modal:", id, name);
+    // this.$refs.DeleteModal.showModal(name, id);
+  }
+  deleteEstablishment(): void {
+    // this.$toast.success("Establishment deleted successfully", "Success!");
+    this.getEstablishments();
+  }
+}
 </script>

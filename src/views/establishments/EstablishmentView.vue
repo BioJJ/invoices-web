@@ -58,26 +58,24 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 import EstablishmentsServices from "@/services/EstablishmentsServices";
-export default {
-  data: () => ({
-    establishment: [],
-  }),
-  mounted() {
+import { Vue, Component } from "vue-property-decorator";
+
+@Component({})
+export default class EstablishmentView extends Vue {
+  establishment: [] = [];
+
+  mounted(): void {
     this.getEstablishment();
-  },
-  methods: {
-    async getEstablishment() {
-      try {
-        const { data } = await EstablishmentsServices.get(
-          this.$route.params.id
-        );
-        this.establishment = data;
-      } catch (error) {
-        // this.$toast.error("Department not found", "Error!");
-      }
-    },
-  },
-};
+  }
+  async getEstablishment(): Promise<void> {
+    try {
+      const { data } = await EstablishmentsServices.get(this.$route.params.id);
+      this.establishment = data;
+    } catch (error) {
+      // this.$toast.error("Department not found", "Error!");
+    }
+  }
+}
 </script>
