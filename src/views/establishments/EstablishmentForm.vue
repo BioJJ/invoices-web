@@ -22,7 +22,11 @@
             <v-row class="pgc-form-row">
               <v-col cols="5">
                 <v-text-field
-                  :rules="[rules.required, rules.min5chars, rules.max255chars]"
+                  :rules="[
+                    validadores.required,
+                    validadores.min5chars,
+                    validadores.max255chars,
+                  ]"
                   v-model="form.name"
                   label="Name"
                   dense
@@ -31,7 +35,11 @@
 
               <v-col cols="4">
                 <v-text-field
-                  :rules="[rules.required, rules.min5chars, rules.max255chars]"
+                  :rules="[
+                    validadores.required,
+                    validadores.min5chars,
+                    validadores.max255chars,
+                  ]"
                   v-model="form.cnpj"
                   label="CNPJ"
                   dense
@@ -72,70 +80,67 @@
 </template>
 
 <script lang="ts">
-import rules from "@/util/general-rules";
+import { rulesEstablishment } from "@/util/general-rules";
 import EstablishmentsServices from "@/services/EstablishmentsServices";
-import IEstablishment from "@/types/IEstablishment";
-export default {
-  data: () => ({
-    formLoading: false,
-    rules: rules,
-    companies: [],
-    funtionality: {},
-    establishment: [],
-    form: {
-      name: "",
-      cnpj: "",
-    },
-  }),
-  mounted() {
-    this.$route.params.id && this.getEstablishment();
-  },
-  methods: {
-    async getEstablishment() {
-      try {
-        const { data } = await EstablishmentsServices.get(
-          this.$route.params.id
-        );
-        this.establishment = data;
-        this.form = this.establishment;
-      } catch (error) {
-        // this.$toast.error("Department not found", "Error!");
-      }
-    },
-    async submitForm() {
-      this.formLoading = true;
-      try {
-        if (this.$route.params.id) {
-          await EstablishmentsServices.update(
-            this.$route.params.id,
-            this.establishment
-          );
-        } else {
-          await EstablishmentsServices.create(this.form);
-        }
-        this.formLoading = false;
-        this.$router.push({ name: "EstablishmentList" });
+import { Establishment } from "@/models/Establishment";
+import { Vue, Component } from "vue-property-decorator";
 
-        this.formLoading = false;
-      } catch (error) {
-        this.formLoading = false;
-      }
-    },
-    cancel(): void {
-      this.resetForm();
-      this.$router.push({ name: "EstablishmentList" });
-    },
-    resetForm(): void {
-      if (this.establishment) {
-        console.log(1);
-        this.getEstablishment();
+@Component({})
+export default class EstablishmentForm extends Vue {
+  formLoading = false;
+  validadores = rulesEstablishment();
+  establishment: [] = [];
+  form: Establishment = {
+    name: "",
+    cnpj: "",
+  };
+
+  mounted(): void {
+    this.$route.params.id && this.getEstablishment();
+  }
+
+  async getEstablishment(): Promise<void> {
+    try {
+      const { data } = await EstablishmentsServices.get(this.$route.params.id);
+      this.establishment = data;
+      this.form = data;
+    } catch (error) {
+      // this.$toast.error("Department not found", "Error!");
+    }
+  }
+  async submitForm(): Promise<void> {
+    this.formLoading = true;
+    try {
+      if (this.$route.params.id) {
+        await EstablishmentsServices.update(
+          this.$route.params.id,
+          this.establishment
+        );
       } else {
-        this.form = {
-          name: "",
-          cnpj: "",
-        };
+        await EstablishmentsServices.create(this.form);
       }
-    },
-  },
-};
+      this.formLoading = false;
+      this.$router.push({ name: "EstablishmentList" });
+
+      this.formLoading = false;
+    } catch (error) {
+      this.formLoading = false;
+    }
+  }
+  cancel(): void {
+    this.resetForm();
+    this.$router.push({ name: "EstablishmentList" });
+  }
+  resetForm(): void {
+    if (this.establishment) {
+      console.log(1);
+      this.getEstablishment();
+    } else {
+      this.form = {
+        name: "",
+        cnpj: "",
+      };
+    }
+  }
+}
 </script>

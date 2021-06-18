@@ -1,5 +1,5 @@
 export class Establishment {
-  id: string;
+  _id?: string;
   name: string;
   cnpj: string;
 }
