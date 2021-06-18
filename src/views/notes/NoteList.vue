@@ -1,11 +1,6 @@
 <template>
   <v-container id="notes" class="pa-6" fluid>
-    <delete-modal
-      @delete="deleteNote"
-      ref="DeleteModal"
-      :table="'note'"
-      :route="'notes'"
-    />
+    <delete-modal @delete="deleteNote" ref="DeleteModal" :table="'notes'" />
 
     <v-row class="mb-3">
       <v-col cols="6">
@@ -60,7 +55,7 @@
           >
             <template v-slot:[`item.action`]="{ item }">
               <table-action
-                @delete="deleteModal(item.name, item.id)"
+                @delete="deleteModal(item.name, item._id)"
                 route="notes"
                 :item="item"
               />
@@ -112,9 +107,8 @@ export default class NoteList extends Vue {
     this.notes = data;
   }
 
-  deleteModal(name: string, id: string): void {
-    console.log("deveria ter um modal:", id, name);
-    // this.$refs.DeleteModal.showModal(name, id);
+  deleteModal(name: string, _id: string): void {
+    this.$refs.DeleteModal.showModal(name, _id);
   }
   deleteNote(): void {
     // this.$toast.success("Establishment deleted successfully", "Success!");

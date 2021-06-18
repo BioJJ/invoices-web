@@ -1,10 +1,9 @@
 <template>
-  <v-container id="establishments" class="pa-6" fluid>
+  <v-container id="establishment" class="pa-6" fluid>
     <delete-modal
       @delete="deleteEstablishment"
       ref="DeleteModal"
-      :table="'establishment'"
-      :route="'establishments'"
+      :table="'establishments'"
     />
 
     <v-row class="mb-3">
@@ -60,7 +59,7 @@
           >
             <template v-slot:[`item.action`]="{ item }">
               <table-action
-                @delete="deleteModal(item.name, item.id)"
+                @delete="deleteModal(item.name, item._id)"
                 route="establishments"
                 :item="item"
               />
@@ -80,8 +79,8 @@ import EstablishmentsServices from "@/services/EstablishmentsServices";
 
 @Component({
   components: {
-    DeleteModal,
     TableAction,
+    DeleteModal,
   },
 })
 export default class EstablishmentList extends Vue {
@@ -110,9 +109,8 @@ export default class EstablishmentList extends Vue {
     this.establishments = data;
   }
 
-  deleteModal(name: string, id: string): void {
-    console.log("deveria ter um modal:", id, name);
-    // this.$refs.DeleteModal.showModal(name, id);
+  deleteModal(name: string, _id: string): void {
+    this.$refs.DeleteModal.showModal(name, _id);
   }
   deleteEstablishment(): void {
     // this.$toast.success("Establishment deleted successfully", "Success!");
