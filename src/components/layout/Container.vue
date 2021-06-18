@@ -23,14 +23,18 @@
 
 <script lang="ts">
 import Sidebar from "./Sidebar.vue";
-import routes from "../../util/menu-routes";
-export default {
-  components: { Sidebar },
-  data: () => ({
-    drawer: true,
-    menu: routes,
-  }),
-};
+import routes from "@/util/menu-routes";
+import { Vue, Component } from "vue-property-decorator";
+
+@Component({
+  components: {
+    Sidebar,
+  },
+})
+export default class Container extends Vue {
+  drawer = true;
+  menu = routes;
+}
 </script>
 
 <style>
