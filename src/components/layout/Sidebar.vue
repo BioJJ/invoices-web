@@ -27,22 +27,22 @@
   </v-navigation-drawer>
 </template>
 
-<script>
-export default {
-  props: {
-    drawer: { type: Boolean, default: true },
-    menu: { default: [] },
-  },
-  data: () => ({
-    localDrawner: true,
-  }),
+<script lang="ts">
+import { Vue, Component, Prop } from "vue-property-decorator";
 
-  watch: {
-    drawer() {
-      this.localDrawner = !this.localDrawner;
-    },
-  },
-};
+@Component({})
+export default class Sidebar extends Vue {
+  @Prop() menu: { default: [] };
+  drawer = false;
+
+  localDrawner = true;
+
+  // watch: {
+  //   drawer() {
+  //     this.localDrawner = !this.localDrawner;
+  //   }
+  // }
+}
 </script>
 
 <style>
