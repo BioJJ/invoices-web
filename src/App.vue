@@ -5,11 +5,13 @@
 </template>
 
 <script lang="ts">
-export default {
-  data: () => ({
-    drawer: true,
-  }),
-};
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+
+@Component({})
+export default class extends Vue {
+  drawer = true;
+}
 </script>
 
 <style>

@@ -43,22 +43,21 @@
   </v-menu>
 </template>
 
-<script>
-export default {
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-    route: {
-      type: String,
-      required: true,
-    },
-  },
-  methods: {
-    deleteModal() {
-      this.$emit("delete");
-    },
-  },
-};
+<script lang="ts">
+import { Vue, Component, Prop } from "vue-property-decorator";
+
+@Component({})
+export default class TableAction extends Vue {
+  @Prop() item: {
+    type: any;
+    required: true;
+  };
+  @Prop() route: {
+    type: string;
+    required: true;
+  };
+  deleteModal(): void {
+    this.$emit("delete");
+  }
+}
 </script>
