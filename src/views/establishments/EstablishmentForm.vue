@@ -22,11 +22,7 @@
             <v-row class="pgc-form-row">
               <v-col cols="5">
                 <v-text-field
-                  :rules="[
-                    validadores.required,
-                    validadores.min5chars,
-                    validadores.max255chars,
-                  ]"
+                  :rules="[rules.required, rules.min5chars, rules.max255chars]"
                   v-model="form.name"
                   label="Name"
                   dense
@@ -35,11 +31,7 @@
 
               <v-col cols="4">
                 <v-text-field
-                  :rules="[
-                    validadores.required,
-                    validadores.min5chars,
-                    validadores.max255chars,
-                  ]"
+                  :rules="[rules.required, rules.min5chars, rules.max255chars]"
                   v-model="form.cnpj"
                   label="CNPJ"
                   dense
@@ -80,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { rulesEstablishment } from "@/util/general-rules";
+import { rules } from "@/util/general-rules";
 import EstablishmentsServices from "@/services/EstablishmentsServices";
 import { Establishment } from "@/models/Establishment";
 import { Vue, Component } from "vue-property-decorator";
@@ -88,7 +80,7 @@ import { Vue, Component } from "vue-property-decorator";
 @Component({})
 export default class EstablishmentForm extends Vue {
   formLoading = false;
-  validadores = rulesEstablishment();
+  rules = rules();
   establishment: [] = [];
   form: Establishment = {
     name: "",

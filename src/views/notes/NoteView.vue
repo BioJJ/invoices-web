@@ -23,7 +23,7 @@
               <v-col cols="4">
                 <v-text-field
                   v-model="note.establishment"
-                  label="Issue Date"
+                  label="Establishment"
                   readonly
                   filled
                   dense
@@ -62,25 +62,24 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 import NotesServices from "@/services/NotesServices";
-export default {
-  data: () => ({
-    note: [],
-  }),
-  mounted() {
+import { Vue, Component } from "vue-property-decorator";
+
+@Component({})
+export default class NoteView extends Vue {
+  note: [] = [];
+
+  mounted(): void {
     this.getNote();
-  },
-  methods: {
-    async getNote() {
-      try {
-        const { data } = await NotesServices.get(this.$route.params.id);
-        this.note = data;
-        console.log(this.note);
-      } catch (error) {
-        // this.$toast.error("Department not found", "Error!");
-      }
-    },
-  },
-};
+  }
+  async getNote(): Promise<void> {
+    try {
+      const { data } = await NotesServices.get(this.$route.params.id);
+      this.note = data;
+    } catch (error) {
+      // this.$toast.error("Department not found", "Error!");
+    }
+  }
+}
 </script>

@@ -1,4 +1,4 @@
-export function rulesEstablishment() {
+export function rules() {
   return {
     required: (value: any) => !!value || 'Required.',
 

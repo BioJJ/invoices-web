@@ -20,14 +20,14 @@
               />
             </div>
             <v-row class="pgc-form-row">
-              <v-col cols="5">
+              <!-- <v-col cols="5">
                 <v-text-field
                   :rules="[rules.required, rules.min5chars, rules.max255chars]"
                   v-model="form.date"
                   label="Issue Date"
                   dense
                 ></v-text-field>
-              </v-col>
+              </v-col> -->
 
               <v-col cols="3">
                 <v-autocomplete
@@ -38,6 +38,7 @@
                   item-value="_id"
                   item-text="name"
                   dense
+                  filled
                 ></v-autocomplete>
               </v-col>
 
@@ -46,6 +47,17 @@
                   :rules="[rules.required]"
                   v-model="form.total"
                   label="total"
+                  dense
+                  filled
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="4">
+                <v-text-field
+                  v-model="form.issue_date"
+                  label="Valor total"
+                  readonly
+                  filled
                   dense
                 ></v-text-field>
               </v-col>
@@ -79,73 +91,73 @@
 </template>
 
 <script lang="ts">
-import rules from "@/util/general-rules";
+import { rules } from "@/util/general-rules";
 import NotesServices from "@/services/NotesServices";
 import EstablishmentsServices from "@/services/EstablishmentsServices";
-import IEstablishment from "@/types/IEstablishment";
-export default {
-  data: () => ({
-    formLoading: false,
-    rules: rules,
-    establishments: [],
+import { Notes } from "@/models/Notes";
+import { Vue, Component } from "vue-property-decorator";
+import { Establishment } from "@/models/Establishment";
 
-    note: [],
-    form: {
-      total: "",
-      issue_date: "",
-      establishment: "",
-    },
-  }),
-  mounted() {
+@Component({})
+export default class NoteForm extends Vue {
+  formLoading = false;
+  rules = rules();
+  establishments: [] = [];
+
+  note: [] = [];
+  form: Notes = {
+    total: 0,
+    issue_date: Date.now(),
+    establishment: new Establishment(),
+  };
+  mounted(): void {
     this.getEstablishments();
     this.$route.params.id && this.getNote();
-  },
-  methods: {
-    async getEstablishments(): Promise<void> {
-      const { data } = await EstablishmentsServices.getAll();
-      this.establishments = data;
-    },
-    async getNote() {
-      try {
-        const { data } = await NotesServices.get(this.$route.params.id);
-        this.note = data;
-        this.form = this.note;
-      } catch (error) {
-        // this.$toast.error("Department not found", "Error!");
-      }
-    },
-    async submitForm() {
-      this.formLoading = true;
-      try {
-        if (this.$route.params.id) {
-          await NotesServices.update(this.$route.params.id, this.note);
-        } else {
-          await NotesServices.create(this.form);
-        }
-        this.formLoading = false;
-        this.$router.push({ name: "NoteList" });
-
-        this.formLoading = false;
-      } catch (error) {
-        this.formLoading = false;
-      }
-    },
-    cancel(): void {
-      this.resetForm();
-      this.$router.push({ name: "NoteList" });
-    },
-    resetForm(): void {
-      if (this.note) {
-        console.log(1);
-        this.getNote();
+  }
+  async getEstablishments(): Promise<void> {
+    const { data } = await EstablishmentsServices.getAll();
+    this.establishments = data;
+  }
+  async getNote(): Promise<void> {
+    try {
+      const { data } = await NotesServices.get(this.$route.params.id);
+      this.note = data;
+      this.form = data;
+    } catch (error) {
+      // this.$toast.error("Department not found", "Error!");
+    }
+  }
+  async submitForm(): Promise<void> {
+    this.formLoading = true;
+    try {
+      if (this.$route.params.id) {
+        await NotesServices.update(this.$route.params.id, this.note);
       } else {
-        this.form = {
-          total: "",
-          issue_date: "",
-          establishment: "",
-        };
+        await NotesServices.create(this.form);
       }
-    },
-  },
-};
+      this.formLoading = false;
+      this.$router.push({ name: "NoteList" });
+
+      this.formLoading = false;
+    } catch (error) {
+      this.formLoading = false;
+    }
+  }
+  cancel(): void {
+    this.resetForm();
+    this.$router.push({ name: "NoteList" });
+  }
+  resetForm(): void {
+    if (this.note) {
+      console.log(1);
+      this.getNote();
+    } else {
+      this.form = {
+        total: 0,
+        issue_date: Date.now(),
+        establishment: new Establishment(),
+      };
+    }
+  }
+}
 </script>

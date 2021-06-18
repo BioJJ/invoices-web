@@ -76,45 +76,49 @@
 import TableAction from "@/components/layout/TableAction.vue";
 import DeleteModal from "@/components/layout/DeleteModal.vue";
 import NotesServices from "@/services/NotesServices";
-export default {
-  components: { DeleteModal, TableAction },
-  data: () => ({
-    search: "",
-    page: 1,
-    pageCount: 0,
-    itemsPerPage: 10,
-    notes: [],
-    headers: [
-      { text: "Id", align: "start", value: "_id" },
-      { text: "Issue Date", align: "start", value: "issue_date" },
-      { text: "Total", align: "start", value: "total" },
-      { text: "Establishment", align: "start", value: "establishment" },
-      {
-        text: "Action",
-        align: "center",
-        value: "action",
-        sortable: false,
-        width: "150px",
-      },
-    ],
-  }),
-  mounted() {
+import { Vue, Component } from "vue-property-decorator";
+
+@Component({
+  components: {
+    DeleteModal,
+    TableAction,
+  },
+})
+export default class NoteList extends Vue {
+  search = "";
+  page = 1;
+  pageCount = 0;
+  itemsPerPage = 10;
+  notes: [] = [];
+  headers = [
+    { text: "Id", align: "start", value: "_id" },
+    { text: "Issue Date", align: "start", value: "issue_date" },
+    { text: "Total", align: "start", value: "total" },
+    { text: "Establishment", align: "start", value: "establishment" },
+    {
+      text: "Action",
+      align: "center",
+      value: "action",
+      sortable: false,
+      width: "150px",
+    },
+  ];
+  mounted(): void {
     this.getNotes();
-  },
+  }
 
-  methods: {
-    async getNotes(): Promise<void> {
-      const { data } = await NotesServices.getAll();
-      this.notes = data;
-    },
+  async getNotes(): Promise<void> {
+    const { data } = await NotesServices.getAll();
+    this.notes = data;
+  }
 
-    deleteModal(name: string, id: string) {
-      // this.$refs.DeleteModal.showModal(name, id);
-    },
-    deleteNote() {
-      // this.$toast.success("Establishment deleted successfully", "Success!");
-      this.getNotes();
-    },
-  },
-};
+  deleteModal(name: string, id: string): void {
+    console.log("deveria ter um modal:", id, name);
+    // this.$refs.DeleteModal.showModal(name, id);
+  }
+  deleteNote(): void {
+    // this.$toast.success("Establishment deleted successfully", "Success!");
+    this.getNotes();
+  }
+}
 </script>
