@@ -22,7 +22,7 @@
             <v-row class="pgc-form-row">
               <v-col cols="3">
                 <v-text-field
-                  v-model="note.establishment"
+                  v-model="note.establishment.name"
                   label="Establishment"
                   readonly
                   filled
@@ -33,7 +33,7 @@
               <v-col cols="4">
                 <v-text-field
                   v-model="note.total"
-                  label="Valor total"
+                  label="Amount"
                   readonly
                   filled
                   dense

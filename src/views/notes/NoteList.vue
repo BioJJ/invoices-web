@@ -89,8 +89,8 @@ export default class NoteList extends Vue {
   headers = [
     { text: "Id", align: "start", value: "_id" },
     { text: "Issue Date", align: "start", value: "formattedDate" },
-    { text: "Total", align: "start", value: "total" },
-    { text: "Establishment", align: "start", value: "establishment" },
+    { text: "Amount", align: "start", value: "total" },
+    { text: "Establishment", align: "start", value: "establishment.name" },
     {
       text: "Action",
       align: "center",
