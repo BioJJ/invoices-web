@@ -95,8 +95,8 @@ export default class NoteForm extends Vue {
   formLoading = false;
   rules = rules();
   establishments: Establishment[] = [];
-  note: Note[] = [];
-  form = {
+  note: Note;
+  form: Note = {
     total: null,
     issue_date: new Date(this.getDateNow()),
     establishment: new Establishment(),
@@ -111,9 +111,8 @@ export default class NoteForm extends Vue {
   }
   async getNote(): Promise<void> {
     try {
-      const { data } = await NotesServices.get(this.$route.params.id);
-      this.note = data;
-      this.form = data;
+      this.note = await NotesServices.get(this.$route.params.id);
+      this.form = await NotesServices.get(this.$route.params.id);
     } catch (error) {
       this.$toast.error("Notes not found", "Error!");
     }
