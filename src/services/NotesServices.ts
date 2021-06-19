@@ -1,12 +1,26 @@
+import { Note } from '@/models/Note';
+import { NoteParser } from '@/parsers/parserNote';
 import api from './http-common';
 
 class NotesServices {
-  getAll() {
-    return api.get('/notes');
+  async getAll(): Promise<Note[]> {
+    try {
+      const { data } = await api.get('/notes');
+
+      return (data as any[]).map((item) => NoteParser(item));
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  get(id: string) {
-    return api.get(`/notes/${id}`);
+  async get(id: string): Promise<Note> {
+    try {
+      const { data } = await api.get(`/notes/${id}`);
+
+      return NoteParser(data);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   create(data: any) {

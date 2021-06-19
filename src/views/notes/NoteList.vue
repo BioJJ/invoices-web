@@ -72,6 +72,7 @@ import TableAction from "@/components/layout/TableAction.vue";
 import DeleteModal from "@/components/layout/DeleteModal.vue";
 import NotesServices from "@/services/NotesServices";
 import { Vue, Component } from "vue-property-decorator";
+import { Note } from "@/models/Note";
 
 @Component({
   components: {
@@ -84,10 +85,10 @@ export default class NoteList extends Vue {
   page = 1;
   pageCount = 0;
   itemsPerPage = 10;
-  notes: [] = [];
+  notes: Note[] = [];
   headers = [
     { text: "Id", align: "start", value: "_id" },
-    { text: "Issue Date", align: "start", value: "issue_date" },
+    { text: "Issue Date", align: "start", value: "formattedDate" },
     { text: "Total", align: "start", value: "total" },
     { text: "Establishment", align: "start", value: "establishment" },
     {
@@ -103,8 +104,7 @@ export default class NoteList extends Vue {
   }
 
   async getNotes(): Promise<void> {
-    const { data } = await NotesServices.getAll();
-    this.notes = data;
+    this.notes = await NotesServices.getAll();
   }
 
   deleteModal(name: string, _id: string): void {

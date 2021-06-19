@@ -37,16 +37,17 @@
                 <v-text-field
                   :rules="[rules.required]"
                   v-model="form.total"
-                  label="total"
+                  type="number"
+                  label="Amount"
                   dense
                   filled
                 ></v-text-field>
               </v-col>
 
-              <v-col cols="4">
+              <v-col cols="5">
                 <v-text-field
                   v-model="form.issue_date"
-                  label="Valor total"
+                  label="Issue Date"
                   readonly
                   filled
                   dense
@@ -85,7 +86,7 @@
 import { rules } from "@/util/general-rules";
 import NotesServices from "@/services/NotesServices";
 import EstablishmentsServices from "@/services/EstablishmentsServices";
-import { Notes } from "@/models/Notes";
+import { Note } from "@/models/Note";
 import { Vue, Component } from "vue-property-decorator";
 import { Establishment } from "@/models/Establishment";
 
@@ -93,11 +94,11 @@ import { Establishment } from "@/models/Establishment";
 export default class NoteForm extends Vue {
   formLoading = false;
   rules = rules();
-  establishments: [] = [];
-  note: [] = [];
-  form: Notes = {
-    total: 0,
-    issue_date: Date.now(),
+  establishments: Establishment[] = [];
+  note: Note;
+  form: Note = {
+    total: null,
+    issue_date: new Date(this.getDateNow()),
     establishment: new Establishment(),
   };
   mounted(): void {
@@ -110,9 +111,8 @@ export default class NoteForm extends Vue {
   }
   async getNote(): Promise<void> {
     try {
-      const { data } = await NotesServices.get(this.$route.params.id);
-      this.note = data;
-      this.form = data;
+      this.note = await NotesServices.get(this.$route.params.id);
+      this.form = await NotesServices.get(this.$route.params.id);
     } catch (error) {
       this.$toast.error("Notes not found", "Error!");
     }
@@ -145,11 +145,18 @@ export default class NoteForm extends Vue {
       this.getNote();
     } else {
       this.form = {
-        total: 0,
-        issue_date: Date.now(),
+        total: null,
+        issue_date: new Date(this.getDateNow()),
         establishment: new Establishment(),
       };
     }
+  }
+  getDateNow() {
+    let dateNow = Date.now();
+
+    dateNow.toLocaleString();
+
+    return dateNow;
   }
 }
 </script>

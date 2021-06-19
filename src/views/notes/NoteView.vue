@@ -20,7 +20,7 @@
               />
             </div>
             <v-row class="pgc-form-row">
-              <v-col cols="4">
+              <v-col cols="3">
                 <v-text-field
                   v-model="note.establishment"
                   label="Establishment"
@@ -40,7 +40,7 @@
                 ></v-text-field>
               </v-col>
 
-              <v-col cols="4">
+              <v-col cols="5">
                 <v-text-field
                   v-model="note.issue_date"
                   label="Valor total"
@@ -63,22 +63,22 @@
 </template>
 
 <script lang="ts">
+import { Note } from "@/models/Note";
 import NotesServices from "@/services/NotesServices";
 import { Vue, Component } from "vue-property-decorator";
 
 @Component({})
 export default class NoteView extends Vue {
-  note: [] = [];
+  note: Note[] = [];
 
   mounted(): void {
     this.getNote();
   }
   async getNote(): Promise<void> {
     try {
-      const { data } = await NotesServices.get(this.$route.params.id);
-      this.note = data;
+      this.note = await NotesServices.get(this.$route.params.id);
     } catch (error) {
-      // this.$toast.error("Department not found", "Error!");
+      this.$toast.error("note not found", "Error!");
     }
   }
 }
