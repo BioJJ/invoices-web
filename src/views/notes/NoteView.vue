@@ -69,7 +69,7 @@ import { Vue, Component } from "vue-property-decorator";
 
 @Component({})
 export default class NoteView extends Vue {
-  note: Note[] = [];
+  note: Note = [];
 
   mounted(): void {
     this.getNote();
