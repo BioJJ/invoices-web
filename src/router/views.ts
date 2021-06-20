@@ -16,7 +16,7 @@ const routes = [
     meta: {
       title: 'Dashboard',
     },
-    component: () => import('../views/Dashboard.vue'),
+    component: () => import('../views/Home.vue'),
   },
 
   // Establishments

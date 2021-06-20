@@ -10,10 +10,15 @@
         ></v-app-bar-nav-icon>
         <img style="max-height: 45px !important; height: 90% !important" />
       </div>
-
-      <v-btn color="white" class="logout-header" elevation="0">
-        GitHub <v-icon small color="primary" class="ml-2">mdi-logout</v-icon>
-      </v-btn>
+      <div class="d-flex">
+        <v-btn color="white" class="logout-header" elevation="0">
+          GitHub <v-icon small color="primary" class="ml-2">mdi-logout</v-icon>
+        </v-btn>
+        <v-btn color="white" class="logout-header" elevation="0">
+          Linkedin
+          <v-icon small color="primary" class="ml-2">mdi-logout</v-icon>
+        </v-btn>
+      </div>
     </v-app-bar>
     <v-main class="pl-12" style="background-color: #eff4ff">
       <router-view style="background-color: #eff4ff"></router-view>
