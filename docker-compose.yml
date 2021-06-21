@@ -1,0 +1,20 @@
+version: '3.5'
+services:
+  invoices-web:
+    image: biojj/invoices-web
+    container_name: invoices-web
+    ports:
+      - '3030:3030'
+    networks:
+      - network
+
+  invoices-api:
+    image: biojj/invoices-api
+    container_name: invoices-api
+    ports:
+      - 3000:3000
+    networks:
+      - network
+
+  networks:
+  network:
